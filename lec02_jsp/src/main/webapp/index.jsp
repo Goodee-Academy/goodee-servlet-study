@@ -31,6 +31,10 @@
 	<a href="/bookReserve">
 		도서 대출하기
 	</a>
+	<br>
+	<a href="/pizzaOrder">
+		피자 주문하기
+	</a>
 </body>
 
 </html>
