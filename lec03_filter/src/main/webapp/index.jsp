@@ -23,6 +23,11 @@
     <input type="text" name="title" placeholder="제목 입력">
     <input type="submit" value="작성">
 	</form>
+	<h1>과제: Filter로 익명 처리하기</h1>
+	<form action="/comment/write" method="post">
+    <input type="text" name="writer" placeholder="작성자명 입력">
+    <input type="submit" value="댓글 작성">
+	</form>
 </body>
 
 </html>
