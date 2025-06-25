@@ -13,6 +13,16 @@
 		<input type="text" name="test_data">
 		<input type="submit" value="데이터 보내기">
 	</form>
+	<br>
+	<form action="/receive/msg" method="POST">
+		<textarea rows="3" cols="20" name="msg"></textarea>
+		<button>보내기</button>
+	</form>
+	<h1>실습: 강제로 공지하기</h1>
+	<form action="/board/write" method="POST">
+    <input type="text" name="title" placeholder="제목 입력">
+    <input type="submit" value="작성">
+	</form>
 </body>
 
 </html>

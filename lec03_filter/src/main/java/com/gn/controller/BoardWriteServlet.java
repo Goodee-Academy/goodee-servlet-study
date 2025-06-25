@@ -6,20 +6,27 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-@WebServlet(name = "receiveDataServlet", urlPatterns = "/receive/*") // 별칭으로 필터 세팅하기 위해 name에 설정
-public class ReceiveDataServlet extends HttpServlet {
+@WebServlet("/board/write")
+public class BoardWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-  public ReceiveDataServlet() {
+  public BoardWriteServlet() {
     super();
   }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("데이터: " + request.getParameter("test_data"));
+		response.setCharacterEncoding("UTF-8");
+		String title = request.getParameter("title");
+		
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter printWriter = response.getWriter();
+		printWriter.println(title);
 	}
 
 }
