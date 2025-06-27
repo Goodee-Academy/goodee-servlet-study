@@ -235,6 +235,9 @@
 			});
 		});
 	</script>
+	
+	<h1>[과제] 방명록 비동기 통신</h1>
+	<a href="/moveCommentPage">방명록 페이지로 이동</a>
 </body>
 
 </html>
