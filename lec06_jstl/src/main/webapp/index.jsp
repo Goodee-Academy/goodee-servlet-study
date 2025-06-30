@@ -4,7 +4,11 @@
 
 <%@ page import="com.gn.dto.Person" %>
 <%@ page import="com.gn.dto.Planet"%>
-<!DOCTYPE html>
+
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<!DOCTYPE html>                                                                                                                                                                                             
 <html>
 
 <head>
@@ -129,6 +133,109 @@
 	<p>(1) ${ empty heroList ? "O" : "X" }</p>
 	<p>(2) ${ (kor gt eng) or not empty heroList ? "true" : "" }</p>
 	<p>(3) ${ (math lt 80) and (eng ge 90) ? "true" : "" }</p>
+	
+	
+	<h1>5. JSTL Core Library</h1>
+	<h2>(1) 변수 선언</h2>
+	<%-- c:set 사용 특징 --%>
+	<%-- 1. 자료형 선언 X (무조건 String) --%>
+	<%-- 2. 반드시 초기값을 넣어야 함 --%>
+	<%-- 3. 변수의 scope => EL, JSTL 내에서는 사용 가능, 스크립틀릿(<% %>)에서는 사용 불가 / 반대는 가능 --%>
+	<c:set var="num3" value="10" scope="page" /> <%-- scope 지정 안 하면 기본값 page --%>
+	<c:set var="num4" value="20" />
+	<c:set var="plus" value="${ num3 + num4 }"></c:set>
+	
+	<h2>(2) 변수 출력</h2>
+	<c:set var="result" value="<b>안녕</b>" />
+	<c:out value="${ result }" />
+	<c:out value="${ result }" escapeXml="false" />
+	
+	<h2>(3) 조건문: if</h2>
+	<c:if test="${ num3 le num4 }">
+		<p>num3가 num4보다 작거나 같네요</p>
+	</c:if>
+	
+	<h2>(4) 조건문: choose</h2>
+	<c:choose>
+		<c:when test="${ num3 gt 20 }">
+			<p>num3이 20보다 큽니까?</p>
+		</c:when>
+		<c:when test="${ num3 ge 10 }">
+			<p>num3이 20보다 작거나 같으면서, 10보다 크거나 같습니까?</p>
+		</c:when>
+		<c:otherwise>
+			<p>
+				1. num3이 20보다 작거나 같다
+				2. num3이 10보다 작다
+				=> num3이 10보다 작습니까?
+			</p>
+		</c:otherwise>
+	</c:choose>
+	
+	<h2>(5) 반복문: forEach</h2>
+	<%-- 기본 for문처럼 사용하기 --%>
+	<c:forEach var="i" begin="1" end="10" step="2"> <%-- step을 명시하지 않으면 1씩 증가 --%>
+		<p>반복 숫자: ${ i }</p>
+	</c:forEach>
+	
+	<%-- 향상된 for문처럼 사용하기 --%>
+	<%
+		String[] colors = {"red", "green", "blue"};
+		request.setAttribute("colors", colors);
+	%>
+	
+	<ul>
+		<c:forEach var="color" items="${ requestScope.colors }">
+			<li style="color:${ color }">${ color }</li>
+		</c:forEach>
+	</ul>
+	
+	<%-- varStatus 속성 --%>
+	<c:forEach var="num" begin="0" end="5" varStatus="vs">
+		<p>
+			숫자: ${ num }, 인덱스: ${ vs.index }, 카운트: ${ vs.count }, 첫번째?: ${ vs.first }, 마지막?: ${ vs.last }
+		</p>
+	</c:forEach>
+	
+	<h2>(6) 경로 지정: 기존 방법 vs JSTL 방법</h2>
+	<%-- 기존 url 사용 방법 --%>
+	<script src="<%= request.getContextPath() %>/resources/js/jQuery-3.7.1.js"></script>
+	<a href="<%= request.getContextPath() %>/boardList"></a>
+	
+	<%-- JSTL c:url 사용 방법 --%>
+	<script src="<c:url value='/resources/js/jQuery-3.7.1.js' />"></script>
+	<a href="<c:url value='/boardList' />">게시판</a>
+	
+	<%-- 파라미터 사용하기 --%>
+	<c:url var="testUrl" value="/boardList">
+		<c:param name="nowPage" value="1" />
+	</c:url>
+	<a href="${ testUrl }">게시판</a>
+	
+	<h1>6. 사이트 테마 설정</h1>
+	<form method="post" action="/setTheme">
+    <button type="submit" name="theme" value="dark">다크모드</button>
+    <button type="submit" name="theme" value="light">라이트모드</button>
+	</form>
+
+	<h1>8. JSTL Formatting Library</h1>
+	<h2>(1) 숫자 정보 포매팅</h2>
+	<fmt:formatNumber value="1234.567" type="number" /><br> <%-- 출력 기능을 포함함 --%>
+	<fmt:formatNumber value="0.875" type="percent" /><br>
+	
+	<fmt:formatNumber value="1234.567" pattern="#,###.##" /><br>
+	<fmt:formatNumber value="1234.5" pattern="00000.00" /><br>
+	
+	<h2>(2) 날짜 정보 포매팅</h2>
+	<c:set var="now" value="<%= new java.util.Date() %>" />
+	<fmt:formatDate value="${ now }" type="date" /><br>
+	<fmt:formatDate value="${ now }" pattern="yy-MM-dd HH:mm:ss" /><br>
+	
+	<h1>9. JSTL Function Library</h1>
+	<c:set var="data" value="How Are You? I am fine" />
+	<p><c:out value="${ data }" /></p>
+	<p><c:out value="${ fn:toUpperCase(data) }" /></p> <%-- JSTL fn은 EL 안에 작성 가능 --%>
+	<p><c:out value="${ fn:replace(data, 'fine', 'apple') }" /></p>
 </body>
 
 </html>
