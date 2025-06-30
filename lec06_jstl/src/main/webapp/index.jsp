@@ -236,6 +236,12 @@
 	<p><c:out value="${ data }" /></p>
 	<p><c:out value="${ fn:toUpperCase(data) }" /></p> <%-- JSTL fn은 EL 안에 작성 가능 --%>
 	<p><c:out value="${ fn:replace(data, 'fine', 'apple') }" /></p>
+	
+	<h1>[과제] JSTL의 forEach 사용하여 별찍기</h1>
+	<form action="/printStar" method="POST">
+		<input type="number" name="starNum">
+		<input type="submit" value="별 찍기">
+	</form>
 </body>
 
 </html>
