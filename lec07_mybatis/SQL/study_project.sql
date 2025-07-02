@@ -16,3 +16,5 @@ INSERT INTO student (student_name, student_age)
 VALUES ('홍길동', 20),
        ('김철수', 22),
        ('이영희', 21);
+       
+SELECT * FROM student;
