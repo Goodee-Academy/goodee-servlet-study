@@ -3,18 +3,26 @@
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gn.mapper.StudentMapper">
-	<select id="selectAll" resultType="com.gn.dto.Student">
-		SELECT student_no "studentNo", student_name "studentName", student_age "studentAge" FROM student 
+	<resultMap id="studentResultMap" type="com.gn.dto.Student">
+		<result property="studentNo" column="student_no" />
+		<result property="studentName" column="student_name" />
+		<result property="studentAge" column="student_age" />
+	</resultMap>
+
+	<select id="selectAll" resultMap="studentResultMap">
+		SELECT * FROM student 
 	</select>
 	
-	<select id="searchStudent" parameterType="string" resultType="com.gn.dto.Student">
-		SELECT student_no "studentNo", student_name "studentName", student_age "studentAge" FROM student
+	<select id="searchStudent" parameterType="string" resultMap="studentResultMap">
+		SELECT * FROM student
 		WHERE student_name LIKE CONCAT("%", "${keyName}", "%")
 	</select>
 	
-	<select id="selectOne" parameterType="_int" resultType="com.gn.dto.Student">
-		SELECT student_no "studentNo", student_name "studentName", student_age "studentAge" FROM student
-		WHERE student_no = #{studentNo}
+	<select id="selectOne" parameterType="_int" resultMap="studentResultMap">
+		SELECT * FROM student
+		<where>
+			student_no = #{studentNo}
+		</where>
 	</select>
 	
 	<insert id="insert" parameterType="com.gn.dto.Student">
@@ -25,11 +33,15 @@
 	<update id="updateStudent" parameterType="com.gn.dto.Student">
 		UPDATE student
 		SET student_name = #{studentName}, student_age = #{studentAge}
-		WHERE student_no = #{studentNo}
+		<where>
+			student_no = #{studentNo}
+		</where>
 	</update>
 	
 	<delete id="deleteStudent" parameterType="_int">
 		DELETE FROM student
-		WHERE student_no = ${studentNo}
+		<where>
+			student_no = ${studentNo}
+		</where>
 	</delete>
 </mapper>
