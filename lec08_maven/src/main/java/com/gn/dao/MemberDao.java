@@ -1,5 +1,7 @@
 package com.gn.dao;
 
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.gn.common.sql.SqlSessionTemplate;
@@ -20,5 +22,13 @@ public class MemberDao {
 		session.close();
 		
 		return result;
+	}
+
+	public Map<Integer, Member> selectAllMember() {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Map<Integer, Member> resultList = session.selectMap("com.gn.mapper.MemberMapper.selectAllMember", "memberNo");
+		session.close();
+		
+		return resultList;
 	}
 }

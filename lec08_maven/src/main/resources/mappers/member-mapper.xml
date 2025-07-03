@@ -15,6 +15,10 @@
 			member_id = #{memberId} AND member_pw = #{memberPw}
 		</where>
 	</select>
+	
+	<select id="selectAllMember" resultMap="memberResultMap">
+		SELECT * FROM member
+	</select>
 
 	<insert id="insertMember" parameterType="com.gn.dto.Member">
 		INSERT INTO member (member_id, member_pw)

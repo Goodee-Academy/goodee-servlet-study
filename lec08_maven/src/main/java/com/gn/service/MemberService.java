@@ -1,5 +1,7 @@
 package com.gn.service;
 
+import java.util.Map;
+
 import com.gn.dao.MemberDao;
 import com.gn.dto.Member;
 
@@ -20,5 +22,9 @@ public class MemberService {
 		member.setMemberPw(memberPw);
 		
 		return dao.selectMember(member);
+	}
+	
+	public Map<Integer, Member> selectAllMember() {
+		return dao.selectAllMember();
 	}
 }
