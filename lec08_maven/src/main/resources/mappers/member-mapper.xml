@@ -8,6 +8,13 @@
 		<result property="memberId" column="member_id" />
 		<result property="memberPw" column="member_pw" />
 	</resultMap>
+	
+	<select id="selectMember" parameterType="com.gn.dto.Member" resultMap="memberResultMap">
+		SELECT * FROM member
+		<where>
+			member_id = #{memberId} AND member_pw = #{memberPw}
+		</where>
+	</select>
 
 	<insert id="insertMember" parameterType="com.gn.dto.Member">
 		INSERT INTO member (member_id, member_pw)

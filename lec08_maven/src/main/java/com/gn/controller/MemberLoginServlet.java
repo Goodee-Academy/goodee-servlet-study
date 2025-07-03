@@ -5,23 +5,26 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.gn.dto.Member;
 import com.gn.service.MemberService;
 
-@WebServlet("/memberCreate")
-public class MemberCreateServlet extends HttpServlet {
+@WebServlet("/memberLogin")
+public class MemberLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService service = new MemberService();
        
-  public MemberCreateServlet() {
+  public MemberLoginServlet() {
     super();
   }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/views/member/create.jsp").forward(request, response);
+		request.getRequestDispatcher("/views/member/login.jsp").forward(request, response);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -31,15 +34,25 @@ public class MemberCreateServlet extends HttpServlet {
 		String memberId = request.getParameter("memberId");
 		String memberPw = request.getParameter("memberPw");
 		
-		// Service -> DAO -> Interface -> Mapper
+		// 전달받은 정보가 일치하는 회원을 반환
+		Member member = service.selectMember(memberId, memberPw);
+		
+		// 1. service: 바구니에 담아 dao에게 전달
+		// 2. dao: 인터페이스에게 db 연결 요청
+		// 3. Mapper: mapper.xml한테 쿼리 호출
+		// 4. xml: select * 쿼리 구성 + resultMap (memberResultMap)
+		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("res_code", "500");
-		jsonObj.put("res_msg", "회원 가입 중 오류가 발생했습니다.");
+		jsonObj.put("res_msg","로그인 중 오류가 발생하였습니다.");
 		
-		int result = service.insertMember(memberId, memberPw);
-		if (result > 0) {
+		if (member != null) {
+			HttpSession session = request.getSession(true);
+			session.setAttribute("loginMember", member);
+			session.setMaxInactiveInterval(60 * 30);
+			
 			jsonObj.put("res_code", "200");
-			jsonObj.put("res_msg", "회원 가입에 성공했습니다.");
+			jsonObj.put("res_msg", "로그인에 성공했습니다.");
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");

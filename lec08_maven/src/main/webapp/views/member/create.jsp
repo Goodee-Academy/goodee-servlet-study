@@ -11,7 +11,7 @@
 </head>
 
 <body>
-	<h1>회원 가입</h1>
+	<h1>== 회원 가입 ==</h1>
 	<%@ include file="/views/include/nav.jsp" %><br>
 	
 	<form id="createMemberFrm">
@@ -57,9 +57,12 @@
 						dataType : "JSON",
 						success : function(data) {
 							alert(data.res_msg);
+							if (data.res_code == 200) {
+								// 로그인 화면 전환
+							}
 						},
 						error : function() {
-							
+							alert("오류 발생!!");
 						}
 					});
 				}

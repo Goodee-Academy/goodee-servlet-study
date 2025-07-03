@@ -13,6 +13,9 @@ CREATE TABLE member (
 
 SELECT * FROM member;
 
+DELETE FROM member
+WHERE member_no = 2;
+
 -- 게시판(board) 테이블 생성
 CREATE TABLE board (
 	board_no INT AUTO_INCREMENT PRIMARY KEY,
