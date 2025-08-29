@@ -12,8 +12,24 @@ import com.gn.dto.Board;
 public class BoardService {
 	private BoardDao boardDao = new BoardDao();
 	
-	public List<Board> selectBoardList() {
-		return boardDao.selectBoardList();
+	public List<Board> selectBoardList(Board board) {
+		return boardDao.selectBoardList(board);
+	}
+	
+	public int selectBoardCount(Board board) {
+		return boardDao.selectBoardCount(board);
+	}
+	
+	public Board selectBoardOne(int boardNo) {
+		return boardDao.selectBoardOne(boardNo);
+	}
+	
+	public Attach selectAttachByBoardNo(int boardNo) {
+		return boardDao.selectAttachByBoardNo(boardNo);
+	}
+	
+	public Attach selectAttachByAttachNo(int attachNo) {
+		return boardDao.selectAttachByAttachNo(attachNo);
 	}
 
 	public int createBoardWithAttach(Board board, Attach attach) {
@@ -47,4 +63,7 @@ public class BoardService {
 		
 		return result;
 	}
+
+	
+
 }
